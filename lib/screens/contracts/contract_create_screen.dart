@@ -69,7 +69,7 @@ class _ContractCreateScreenState extends State<ContractCreateScreen> {
     }
 
     final newContract = Contract(
-      id: '', // MockAPI tự sinh ID
+      id: '',
       roomId: _selectedRoomId!,
       tenantId: _selectedTenantId!,
       startDate: _startDate.toIso8601String().split('T')[0],
@@ -80,7 +80,6 @@ class _ContractCreateScreenState extends State<ContractCreateScreen> {
 
     try {
       await apiService.createContract(newContract);
-
       // Cập nhật trạng thái phòng thành occupied
       final rooms = await apiService.getRooms();
       final room = rooms.firstWhere((r) => r.id == _selectedRoomId);

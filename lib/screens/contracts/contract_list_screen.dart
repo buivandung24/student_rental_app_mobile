@@ -19,7 +19,7 @@ class _ContractListScreenState extends State<ContractListScreen> {
   late Future<List<Tenant>> futureTenants;
   final ApiService apiService = ApiService();
 
-  String _filterStatus = 'all'; // all, active, about_to_expire, expired
+  String _filterStatus = 'all';
 
   @override
   void initState() {

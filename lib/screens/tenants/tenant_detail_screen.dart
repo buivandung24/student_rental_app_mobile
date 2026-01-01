@@ -2,7 +2,6 @@ import 'package:final_project/models/tenant.dart';
 import 'package:final_project/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'tenant_form_screen.dart';
-import 'package:http/http.dart' as http;
 
 class TenantDetailScreen extends StatelessWidget {
   final Tenant tenant;
@@ -17,7 +16,10 @@ class TenantDetailScreen extends StatelessWidget {
         title: const Text('Xóa người thuê?'),
         content: Text('Bạn có chắc muốn xóa ${tenant.fullName}?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Hủy')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Hủy'),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Xóa', style: TextStyle(color: Colors.red)),
@@ -28,21 +30,13 @@ class TenantDetailScreen extends StatelessWidget {
 
     if (confirm == true) {
       try {
-        // Lưu ý: Hiện tại ApiService chưa có deleteTenant, ta sẽ thêm tạm ở đây
-        // (Bạn có thể bổ sung deleteTenant vào ApiService sau)
-        final response = await http.delete(
-          Uri.parse('https://695498b51cd5294d2c7cfbf2.mockapi.io/tenants/${tenant.id}'),
-        );
+        await apiService.deleteTenant(tenant.id);
 
-        if (response.statusCode == 200) {
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Xóa người thuê thành công')),
-            );
-            Navigator.pop(context, true);
-          }
-        } else {
-          throw Exception('Lỗi xóa: ${response.statusCode}');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Xóa người thuê thành công')),
+          );
+          Navigator.pop(context, true);
         }
       } catch (e) {
         if (context.mounted) {

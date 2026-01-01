@@ -90,6 +90,28 @@ class ApiService {
     }
   }
 
+  Future<Tenant> updateTenant(Tenant tenant) async {
+    final response = await http.put(
+      Uri.parse('$_baseTenantsUrl/${tenant.id}'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(tenant.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return Tenant.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to update tenant: ${response.statusCode}');
+    }
+  }
+
+  Future<void> deleteTenant(String id) async {
+    final response = await http.delete(Uri.parse('$_baseTenantsUrl/$id'));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete tenant: ${response.statusCode}');
+    }
+  }
+
   // ------------------- CONTRACTS -------------------
   Future<List<Contract>> getContracts() async {
     final response = await http.get(Uri.parse(_baseContractsUrl));

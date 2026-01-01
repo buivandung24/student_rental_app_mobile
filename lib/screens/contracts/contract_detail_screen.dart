@@ -44,12 +44,6 @@ class _ContractDetailScreenState extends State<ContractDetailScreen> {
             _infoRow('Tiền cọc', '${widget.contract.deposit.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]}.')} đ'),
             _infoRow('Trạng thái', widget.contract.status, color: statusColor),
             const SizedBox(height: 30),
-            const Center(
-              child: Text(
-                'Danh sách thanh toán sẽ được thêm ở bước tiếp theo',
-                style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
-              ),
-            ),
           ],
         ),
       ),

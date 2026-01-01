@@ -77,7 +77,7 @@ class RoomDetailScreen extends StatelessWidget {
           children: [
             _buildInfoCard('Mã phòng', room.id),
             _buildInfoCard('Loại phòng', room.roomType),
-            _buildInfoCard('Giá thuê', '${room.price.toStringAsFixed(0).replaceAll(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), r'$1.')} đ/tháng'),
+            _buildInfoCard('Giá thuê', '${room.price.toStringAsFixed(0)} đ/tháng'),
             _buildInfoCard('Trạng thái', room.status == 'available' ? 'Trống' : 'Đã thuê',
                 color: room.status == 'available' ? Colors.green : Colors.red),
           ],

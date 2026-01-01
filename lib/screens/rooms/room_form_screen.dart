@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class RoomFormScreen extends StatefulWidget {
-  final Room? room; // Nếu null thì là thêm mới, nếu có thì là sửa
+  final Room? room;
 
   const RoomFormScreen({super.key, this.room});
 
@@ -18,6 +18,7 @@ class _RoomFormScreenState extends State<RoomFormScreen> {
 
   late TextEditingController _idController;
   late TextEditingController _priceController;
+
   String _roomType = 'Single';
   String _status = 'available';
 
@@ -28,8 +29,13 @@ class _RoomFormScreenState extends State<RoomFormScreen> {
     super.initState();
     _idController = TextEditingController(text: widget.room?.id ?? '');
     _priceController = TextEditingController(text: widget.room?.price.toString() ?? '');
-    _roomType = widget.room?.roomType ?? 'Single';
-    _status = widget.room?.status ?? 'available';
+    final String? apiRoomType = widget.room?.roomType;
+    if (apiRoomType != null && roomTypes.contains(apiRoomType)) {
+      _roomType = apiRoomType;
+    } else {
+      _roomType = 'Single';
+    }
+    _status = widget.room?.status == 'occupied' ? 'occupied' : 'available';
   }
 
   @override
@@ -88,20 +94,6 @@ class _RoomFormScreenState extends State<RoomFormScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                controller: _idController,
-                decoration: const InputDecoration(
-                  labelText: 'Mã phòng (ví dụ: R101)',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Vui lòng nhập mã phòng';
-                  }
-                  return null;
-                },
-                enabled: !isEdit, // Không cho sửa ID khi edit
-              ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: _roomType,
@@ -113,9 +105,11 @@ class _RoomFormScreenState extends State<RoomFormScreen> {
                   return DropdownMenuItem(value: type, child: Text(type));
                 }).toList(),
                 onChanged: (value) {
-                  setState(() {
-                    _roomType = value!;
-                  });
+                  if (value != null) {
+                    setState(() {
+                      _roomType = value;
+                    });
+                  }
                 },
               ),
               const SizedBox(height: 16),
@@ -148,9 +142,11 @@ class _RoomFormScreenState extends State<RoomFormScreen> {
                   DropdownMenuItem(value: 'occupied', child: Text('Đã thuê')),
                 ],
                 onChanged: (value) {
-                  setState(() {
-                    _status = value!;
-                  });
+                  if (value != null) {
+                    setState(() {
+                      _status = value;
+                    });
+                  }
                 },
               ),
               const SizedBox(height: 32),

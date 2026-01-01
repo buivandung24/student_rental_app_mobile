@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class PaymentFormScreen extends StatefulWidget {
   final String contractId;
-  final double roomPrice; // Để gợi ý số tiền mặc định
+  final double roomPrice;
 
   const PaymentFormScreen({super.key, required this.contractId, required this.roomPrice});
 

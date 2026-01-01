@@ -39,7 +39,7 @@ class _TenantFormScreenState extends State<TenantFormScreen> {
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final newTenant = Tenant(
+    final updatedTenant = Tenant(
       id: _idController.text.trim(),
       fullName: _fullNameController.text.trim(),
       contact: _contactController.text.trim(),
@@ -47,18 +47,19 @@ class _TenantFormScreenState extends State<TenantFormScreen> {
 
     try {
       if (widget.tenant == null) {
-        await apiService.createTenant(newTenant);
+        // Thêm mới
+        await apiService.createTenant(updatedTenant);
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Thêm người thuê thành công')),
         );
       } else {
-        // MockAPI không hỗ trợ PUT cho tenants? Nếu có thì thêm updateTenant vào ApiService
-        // Hiện tại ta dùng POST để tạo mới, nếu cần update thì thêm hàm tương tự
+        // Cập nhật (sửa)
+        await apiService.updateTenant(updatedTenant);
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Chỉnh sửa tạm thời chưa hỗ trợ PUT trên endpoint này')),
+          const SnackBar(content: Text('Cập nhật thông tin người thuê thành công')),
         );
-        return;
       }
       Navigator.pop(context, true);
     } catch (e) {
@@ -83,21 +84,6 @@ class _TenantFormScreenState extends State<TenantFormScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                controller: _idController,
-                decoration: const InputDecoration(
-                  labelText: 'Mã người thuê (ví dụ: T001)',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Vui lòng nhập mã';
-                  }
-                  return null;
-                },
-                enabled: !isEdit,
-              ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: _fullNameController,
                 decoration: const InputDecoration(

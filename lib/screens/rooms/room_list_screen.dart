@@ -88,7 +88,7 @@ class _RoomListScreenState extends State<RoomListScreen> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
-                    'Giá: ${room.price.toStringAsFixed(0).replaceAll(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), r'$1.')} đ/tháng\n'
+                    'Giá: ${room.price.toStringAsFixed(0)} đ/tháng\n'
                         'Trạng thái: ${room.status == 'available' ? 'Trống' : 'Đã thuê'}',
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios),
